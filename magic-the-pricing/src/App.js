@@ -8,15 +8,23 @@ function App() {
   const [result, setResult] = useState('');
   const [counter, setCounter] = useState(0);
   const [score, setScore] = useState(0);
-  const [highScore, setHighScore] = useState(0);
+  const [highScore, setHighScore] = useState(() => {
+    const storeHighScore = localStorage.getItem('highscore');
+    return storeHighScore ? 
+    parseInt(storeHighScore) : 0});
+  
+  useEffect(() => {
+    localStorage.setItem('highscore', highScore.toString());
+  }, [highScore]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('https://api.scryfall.com/cards/random?q=%28game%3Apaper%29+usd%3E0+%28image_uris%3Anormal%29');
-        setCard1(response.data);
-
-        const response2 = await axios.get('https://api.scryfall.com/cards/random?q=%28game%3Apaper%29+usd%3E0+%28image_uris%3Anormal%29');
+        const [response1, response2] = await Promise.all([
+          await axios.get('https://api.scryfall.com/cards/random?q=%28game%3Apaper%29+usd%3E0+%28image_uris%3Anormal%29'),
+          await axios.get('https://api.scryfall.com/cards/random?q=%28game%3Apaper%29+usd%3E0+%28image_uris%3Anormal%29')
+        ]);
+        setCard1(response1.data);
         setCard2(response2.data);
 
       } catch (error){
@@ -26,12 +34,10 @@ function App() {
     fetchData();
   }, [counter]);
 
-  function comparePrices() {
-    card1.prices.usd >= card2.prices.usd ? setResult('card 1 is more expensive ' + card1.prices.usd) : setResult('card 2 is more expensive ' + card2.prices.usd);
-  }
   function nextCards() {
     setCard1(null);
     setCard2(null);
+    if (result === 'Incorrect'){setScore(0)};
     setCounter(prevCounter => prevCounter+1);
     setResult('')
   }
@@ -43,7 +49,6 @@ function App() {
   function incorrect() {
     setResult('Incorrect');
     setHighScore(prevHighscore => score > prevHighscore ? prevHighscore = score : prevHighscore);
-    setScore(0);
   }
 
   function card1Clicked() {
@@ -72,7 +77,7 @@ function App() {
       
       <div className='menu'>
       <button disabled={result===''} onClick={nextCards}>
-          Next
+          {result === 'Incorrect' ? 'Restart' : 'Next'}
       </button>
       <p>{result}</p>
       {result !== '' ? <div><p>{card1.name}: {card1.prices.usd}</p> <p>{card2.name}: {card2.prices.usd}</p></div>: ''}
