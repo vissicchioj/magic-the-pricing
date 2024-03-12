@@ -1,6 +1,7 @@
 import './App.css';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Navbar from './components/Navbar';
 
 function App() {
   const [card1, setCard1] = useState(null);
@@ -21,11 +22,19 @@ function App() {
     const fetchData = async () => {
       try {
         const [response1, response2] = await Promise.all([
-          await axios.get('https://api.scryfall.com/cards/random?q=%28game%3Apaper%29+usd%3E0+%28image_uris%3Anormal%29'),
-          await axios.get('https://api.scryfall.com/cards/random?q=%28game%3Apaper%29+usd%3E0+%28image_uris%3Anormal%29')
+          await axios.get('https://api.scryfall.com/cards/random?q=%28game%3Apaper%29+usd%3E0.15+%28image_uris%3Anormal%29+is:nonfoil'),
+          await axios.get('https://api.scryfall.com/cards/random?q=%28game%3Apaper%29+usd%3E0.15+%28image_uris%3Anormal%29+is:nonfoil')
         ]);
-        setCard1(response1.data);
-        setCard2(response2.data);
+        if (response1.data.image_uris && response2.data.image_uris)
+        {
+          setCard1(response1.data);
+          setCard2(response2.data);
+        }
+        else {
+          setCounter(prevCounter => prevCounter + 1)
+        }
+        
+
 
       } catch (error){
         console.log(error);
@@ -61,14 +70,16 @@ function App() {
 
   return (
     <div className="App">
+    <Navbar />
+    <div className='Content'>
       <h1>Which card is more expensive?</h1>
       <h3>Score: {score}</h3>
       <h3>High Score: {highScore}</h3>
       <div>
         {card1 && card2 ? (
           <div className='cards'>
-            <img src = {card1.image_uris.normal} onClick={card1Clicked} className='card1'/>
-            <img src = {card2.image_uris.normal} onClick={card2Clicked} className='card2'/>
+            <img src = {card1.image_uris?.normal} onClick={result === '' ? card1Clicked : null} className='card1'/>
+            <img src = {card2.image_uris?.normal} onClick={result === '' ? card2Clicked : null} className='card2'/>
           </div>
           
         ) : 
@@ -76,11 +87,12 @@ function App() {
       </div>
       
       <div className='menu'>
-      <button disabled={result===''} onClick={nextCards}>
+      <button className='next' disabled={result===''} onClick={nextCards}>
           {result === 'Incorrect' ? 'Restart' : 'Next'}
       </button>
-      <p>{result}</p>
-      {result !== '' ? <div><p>{card1.name}: {card1.prices.usd}</p> <p>{card2.name}: {card2.prices.usd}</p></div>: ''}
+      </div>
+      {result !== '' ? <div className='results'><p>{result}</p><p>{card1.name}: ${card1.prices.usd}</p> <p>{card2.name}: ${card2.prices.usd}</p></div>: ''}
+
     </div>
     </div>
     

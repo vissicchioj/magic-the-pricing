@@ -1,9 +1,41 @@
 * {
   margin: 0;
+  background-color: #2a2828;
+  color: #f0f0f0;
+}
+
+
+footer {
+  bottom: 0;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  line-height: 30px;
+  border-top: solid rgb(253, 238, 238) 1px;
+  position: absolute;
+  width: 100%;
+}
+
+nav {
+  top: 0;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  line-height: 40px;
+  border-bottom: solid rgb(253, 238, 238) 1px;
+  width: 100%;
 }
 
 .App {
   text-align: center;
+}
+
+.Content {
+  position: relative;
+  padding-top: 10px;
+  max-width: fit-content;
+  margin: 0 auto !important; 
+	float: none !important; 
 }
 
 .menu {
@@ -17,9 +49,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 50px;
-  padding: 30px;
+  gap: 10%;
   margin: 10px;
+  max-width: 100%;
 }
 
 .card1 {
@@ -27,8 +59,9 @@
   justify-content: center;
   align-self: flex-start;
   border-radius: 20px;
-  width: 425px;
-  height: 600px;
+  max-width: 40%;
+  max-height: 30%;
+  object-fit: contain;
 }
 
 .card1:hover {
@@ -42,12 +75,21 @@
   justify-content: center;
   align-self: flex-end;
   border-radius: 20px;
-  width: 425px;
-  height: 600px;
+  max-width: 40%;
+  max-height: 30%;
+  object-fit: contain;
 }
 
 .card2:hover {
   cursor: pointer;
   border: solid yellow 2px;
   transform: scale(1.02);
+}
+
+.next:hover {
+  cursor: pointer;
+}
+
+.results {
+  padding-top: 10px;
 }
