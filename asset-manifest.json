@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/magic-the-pricing/static/css/main.9b59331d.css",
+    "main.js": "/magic-the-pricing/static/js/main.6690ec0e.js",
+    "static/js/453.9dbf2881.chunk.js": "/magic-the-pricing/static/js/453.9dbf2881.chunk.js",
+    "index.html": "/magic-the-pricing/index.html",
+    "main.9b59331d.css.map": "/magic-the-pricing/static/css/main.9b59331d.css.map",
+    "main.6690ec0e.js.map": "/magic-the-pricing/static/js/main.6690ec0e.js.map",
+    "453.9dbf2881.chunk.js.map": "/magic-the-pricing/static/js/453.9dbf2881.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.9b59331d.css",
+    "static/js/main.6690ec0e.js"
+  ]
+}
